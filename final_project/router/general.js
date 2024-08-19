@@ -4,17 +4,27 @@ let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
+var existingUsernames = users.filter(function (user) {
+    return user.username
+  });
+
+
+const doesExist= (username) => {
+    let existingUsers = existingUsernames;
+    return existingUsers.includes(username);
+}
+
 
 public_users.post("/register", (req,res) => {
   //Write your code here
   let username = req.body.username;
   let password = req.body.password;
   if (username && password) {
-    if (doesExist(username)) {
-        return res.status(404).json({message:"User already exists"});
+    if (!doesExist(username)) {
+        users.push({"username":username,"password":password});
+        return res.status(200).json({message:"User successfully registered"});  
     } else {
-        users.push({"username":username,"password":password})
-        return res.status(200).json({message:"User successfully registered"});
+        return res.status(404).json({message:"User already exists"});
     }
   } else {
     return res.status(404).json({message:"Please provide both a username and a password to register"});
@@ -22,23 +32,16 @@ public_users.post("/register", (req,res) => {
 
   });
 
-const doesExist= (username) => {
-    let usersWithSameName = users.filter((user) => 
-{
-    return user.username = username;
-})
-if (usersWithSameName.length > 0) {
-    return true
-} else {
-    return false
-}
-}
-
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
   //Write your code here
   return res.send(JSON.stringify(books,null));
 });
+
+public_users.get('/users',function (req, res) {
+    //Write your code here
+    return res.send(users);
+  });
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {

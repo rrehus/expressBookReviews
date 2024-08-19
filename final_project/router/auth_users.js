@@ -40,10 +40,11 @@ regd_users.post("/login",function (req,res) {
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
     let review = req.query.review;
-    console.log(review);
     let isbn = req.params.isbn;
-    books[isbn][reviews] += review;
-    res.send(books[isbn][reviews])
+    let user = req.session.authorization.username;
+    let reviews = books[isbn]["reviews"]
+    reviews[user] = review;
+    res.send(books);
 });
 
 module.exports.authenticated = regd_users;
