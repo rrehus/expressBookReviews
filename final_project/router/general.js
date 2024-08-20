@@ -1,4 +1,5 @@
 const express = require('express');
+const axios = require('axios');
 let books = require("./booksdb.js");
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
@@ -34,9 +35,24 @@ public_users.post("/register", (req,res) => {
 
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
-  //Write your code here
-  return res.send(JSON.stringify(books,null));
-});
+    //Write your code here
+    return res.send(JSON.stringify(books,null));
+  });
+
+
+
+const connectToURL = async (url) => {
+    try {
+        const response = await axios.get(url);
+        console.log(response.data);
+    } catch (error) {
+        console.error(error.toString());
+    }
+}
+
+connectToURL('https://ernore66-5000.theianext-0-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai/');
+
+
 
 public_users.get('/users',function (req, res) {
     //Write your code here
