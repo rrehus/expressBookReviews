@@ -71,9 +71,9 @@ public_users.get('/author/:author',function (req, res) {
   const author = req.params.author;
   let values = Object.values(books);
   booksWithSameAuthor = values.filter((book) => {
-    return book.author = author;
+    return book["author"] == author;
   })
-  return res.send(booksWithSameAuthor);
+  return res.send(JSON.stringify(booksWithSameAuthor,null));
 });
 
 // Get all books based on title
@@ -82,7 +82,7 @@ public_users.get('/title/:title',function (req, res) {
   const title = req.params.title;
   let values = Object.values(books);
   booksWithSameTitle = values.filter((book) => {
-    return book.title = title;
+    return book.title === title;
   })
   return res.send(booksWithSameTitle);
 });

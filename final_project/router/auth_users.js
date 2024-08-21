@@ -44,7 +44,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
     let user = req.session.authorization.username;
     let reviews = books[isbn]["reviews"]
     reviews[user] = review;
-    res.send(books);
+    res.send(books[isbn]);
 });
 
 
@@ -58,7 +58,7 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
     ///        return review
     ///    }
     ///  });
-    res.send(books);  
+    res.send(books[isbn]);  
 })
 
 module.exports.authenticated = regd_users;
